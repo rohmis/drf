@@ -7,7 +7,7 @@ from django.template.defaultfilters import slugify
 
 class Blog(models.Model):
     name= models.CharField(max_length=100)
-    author=models.ForeignKey(User,on_delete=models.CASCADE)
+ 
     description=models.TextField()
     post_date=models.DateField(default=date.today)
     is_public=models.BooleanField(default=True)
@@ -15,7 +15,7 @@ class Blog(models.Model):
     
     
     def __str__(self):
-        return self.name + " ==> "+ str(self.author)
+        return self.name 
     
     def save(self, *args,  **kwargs):
         if not self.slug:
@@ -24,7 +24,7 @@ class Blog(models.Model):
     
 class BlogComment(models.Model):
     description=models.TextField()
-    author=models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
+    # author=models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
     comment_date=models.DateTimeField(auto_now_add=True)
     blog=models.ForeignKey(Blog, on_delete=models.CASCADE)
     

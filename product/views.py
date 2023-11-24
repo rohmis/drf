@@ -2,7 +2,7 @@ from .models import Blog
 from .serializer import BlogSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
+from rest_framework import status
 # Create your views here.
 
 # def blog_list(request):
@@ -25,14 +25,39 @@ from rest_framework.decorators import api_view
 #     }
 #     return JsonResponse(data)
 
-@api_view(['GET'])
+@api_view(['GET','POST'])
 def blog_list(request):
-     all_blogs= Blog.objects.filter(is_public=True)
-     serializer= BlogSerializer(all_blogs ,many=True)
-     return Response(serializer.data)
- 
-@api_view(['GET'])
+    if request.method == "GET":
+       all_blogs= Blog.objects.filter(is_public=True)
+       serializer= BlogSerializer(all_blogs ,many=True)
+       return Response(serializer.data, status=status.HTTP_200_OK)
+   
+    if request.method == "POST":
+        serializer=BlogSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+@api_view(['GET','PUT','DELETE'])
 def blog_detail(request, pk):
-     blogs= Blog.objects.get(is_public=True, pk=pk)
+   if request.method == 'GET':
+     blogs= Blog.objects.get(pk=pk)
      serializer= BlogSerializer(blogs)
-     return Response(serializer.data)
+     return Response(serializer.data, status=status.HTTP_200_OK)
+   
+   if request.method =='PUT':
+         blogs= Blog.objects.get(pk=pk)
+         serializer= BlogSerializer(blogs,data=request.data)
+         if serializer.is_valid():
+             serializer.save()
+             return Response(serializer.data, status=status.HTTP_200_OK)
+         else:
+             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+         
+   if request.method  == 'DELETE':
+        blog=Blog.objects.get(pk=pk)
+        blog.delete()
+        return Response(status=status.HTTP_200_OK)
