@@ -1,11 +1,44 @@
 from rest_framework import serializers
 from product.models import Blog
 
+def name_valid(value):
+        if len(value)< 4:
+            raise serializers.ValidationError("Blog title is very short")
+        else:
+            return value
+        
 class BlogSerializer(serializers.ModelSerializer):
+    
+    id=serializers.IntegerField(read_only=True)
+    name=serializers.CharField( validators =[name_valid])
+    description=serializers.CharField()
+    post_date=serializers.DateField()
+    is_public=serializers.BooleanField()
+    slug=serializers.CharField()
+    
     class Meta:
         model = Blog
         fields = "__all__"
-
+    
+    # Field-level-validation
+    # def validate_name(self, value):
+    #     if len(value)< 4:
+    #         raise serializers.ValidationError("Blog title is very short")
+    #     else:
+    #         return value
+        
+    # object-level-validation
+    def validate(self,data):
+        if data['name']== data['description']:
+            raise serializers.ValidationError("Blog title and description can not be same")
+        else:
+            return data
+        
+    # validators
+    
+        
+        
+            
 
 # --------------simple Serializer-----------------
 
