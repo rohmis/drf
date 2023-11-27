@@ -7,85 +7,89 @@ from rest_framework.views import APIView
 from rest_framework import mixins,generics
 # Create your views here.
 
-class CategoryListView(APIView):
-    def get(self,request):
-        all_Category= Category.objects.all()
-        serializers=CategorySerializer(all_Category, many=True, context={'request':request})
-        return Response(serializers.data)
+# class CategoryListView(APIView):
+#     def get(self,request):
+#         all_Category= Category.objects.all()
+#         serializers=CategorySerializer(all_Category, many=True, context={'request':request})
+#         return Response(serializers.data)
 
 
-class CategoryDetailView(APIView):
-    def get(self,request,pk):
-        single_Category= Category.objects.get(pk=pk)
-        serializers=CategorySerializer(single_Category, context={'request':request})
-        return Response(serializers.data)
+# class CategoryDetailView(APIView):
+#     def get(self,request,pk):
+#         single_Category= Category.objects.get(pk=pk)
+#         serializers=CategorySerializer(single_Category, context={'request':request})
+#         return Response(serializers.data)
 
 
-# -------------Class base view---------------
+# # -------------Class base view---------------
 
-# get and post
+# # get and post
 
-class BlogListView(APIView):
-    def get(self, request):
-        all_blogs= Blog.objects.filter(is_public=True)
-        serializer= BlogSerializer(all_blogs ,many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+# class BlogListView(APIView):
+#     def get(self, request):
+#         all_blogs= Blog.objects.filter(is_public=True)
+#         serializer= BlogSerializer(all_blogs ,many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def post(self, request):
-        serializer=BlogSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def post(self, request):
+#         serializer=BlogSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
-# get,put,delete
+# # get,put,delete
 
-class BlogDetailView(APIView):
+# class BlogDetailView(APIView):
     
-    def get(self, request, pk):
-        blogs= Blog.objects.get(pk=pk)
-        serializer= BlogSerializer(blogs)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+#     def get(self, request, pk):
+#         blogs= Blog.objects.get(pk=pk)
+#         serializer= BlogSerializer(blogs)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def put(self, request,pk):
-         blogs= Blog.objects.get(pk=pk)
-         serializer= BlogSerializer(blogs,data=request.data)
-         if serializer.is_valid():
-             serializer.save()
-             return Response(serializer.data, status=status.HTTP_200_OK)
-         else:
-             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def put(self, request,pk):
+#          blogs= Blog.objects.get(pk=pk)
+#          serializer= BlogSerializer(blogs,data=request.data)
+#          if serializer.is_valid():
+#              serializer.save()
+#              return Response(serializer.data, status=status.HTTP_200_OK)
+#          else:
+#              return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
          
-    def delete(self, request,pk):
-          blog=Blog.objects.get(pk=pk)
-          blog.delete()
-          return Response(status=status.HTTP_200_OK)
+#     def delete(self, request,pk):
+#           blog=Blog.objects.get(pk=pk)
+#           blog.delete()
+#           return Response(status=status.HTTP_200_OK)
         
         
-# -------------------------generic views-----------------------------------------
+# # -------------------------generic views-----------------------------------------
 
-class BlogListGenericView(mixins.ListModelMixin, mixins.CreateModelMixin,generics.GenericAPIView):
-    queryset=Blog.objects.all()
-    serializer_class= BlogSerializer
+# class BlogListGenericView(mixins.ListModelMixin, mixins.CreateModelMixin,generics.GenericAPIView):
+#     queryset=Blog.objects.all()
+#     serializer_class= BlogSerializer
     
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
     
-class BlogDetailGenericView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+# class BlogDetailGenericView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+#     queryset=Blog.objects.all()
+#     serializer_class= BlogSerializer
+#     lookup_field='slug'
+    
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
+    
+#     def put(self, request, *args, **kwargs):
+#         return self.update(request, *args, **kwargs)
+    
+#     def delete(self, request, *args, **kwargs):
+#         return self.destroy(request, *args, **kwargs)
+
+class BlogListCon(generics.CreateAPIView):
     queryset=Blog.objects.all()
-    serializer_class= BlogSerializer
-    lookup_field='slug'
-    
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-    
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-    
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+    serializer_class=BlogSerializer
