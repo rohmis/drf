@@ -1,10 +1,23 @@
-from .models import Blog
-from .serializer import BlogSerializer
+from .models import Blog,Category
+from .serializer import BlogSerializer,CategorySerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.views import APIView
 # Create your views here.
+
+class CategoryListView(APIView):
+    def get(self,request):
+        all_Category= Category.objects.all()
+        serializers=CategorySerializer(all_Category, many=True)
+        return Response(serializers.data)
+
+
+class CategoryDetailView(APIView):
+    def get(self,request,pk):
+        single_Category= Category.objects.get(pk=pk)
+        serializers=CategorySerializer(single_Category)
+        return Response(serializers.data)
 
 
 # -------------Class base view---------------
