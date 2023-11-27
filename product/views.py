@@ -28,6 +28,7 @@ class BlogListView(APIView):
 # get,put,delete
 
 class BlogDetailView(APIView):
+    
     def get(self, request, pk):
         blogs= Blog.objects.get(pk=pk)
         serializer= BlogSerializer(blogs)
