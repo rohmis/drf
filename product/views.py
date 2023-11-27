@@ -90,6 +90,25 @@ from rest_framework import mixins,generics
 #     def delete(self, request, *args, **kwargs):
 #         return self.destroy(request, *args, **kwargs)
 
+#---------concrete api view---------------------------
+
 class BlogListCon(generics.CreateAPIView):
+    queryset=Blog.objects.all()
+    serializer_class=BlogSerializer
+    
+class BlogList(generics.ListAPIView):
+    queryset=Blog.objects.all()
+    serializer_class=BlogSerializer
+    
+class BlogListRetrieve(generics.RetrieveAPIView):
+    queryset=Blog.objects.all()
+    serializer_class=BlogSerializer
+    # lookup_field='slug'
+    
+class BlogDestroyCon(generics.DestroyAPIView):
+    queryset=Blog.objects.all()
+    serializer_class=BlogSerializer
+    
+class BlogUpdateCon(generics.UpdateAPIView):
     queryset=Blog.objects.all()
     serializer_class=BlogSerializer
