@@ -18,7 +18,8 @@ urlpatterns = [
     path('blog_list_creatapiview/',views.BlogListCon.as_view(),name="blog_list_createapiview"),
     path('blog_list/',views.BlogList.as_view(),name="blog_list"),
     path('blog_list_retrieve/<int:pk>/',views.BlogListRetrieve.as_view(),name="blog_list_retrieve"),
-    path('blog_destroy/<int:pk>/',views.BlogDestroyCon.as_view(),name="blog_destroy"),
-    path('blog_update/<int:pk>/',views.BlogUpdateCon.as_view(),name="blog_update"),
+    path('blog_retrieve_destroy/<int:pk>/',views.BlogRetrieveDestroyCon.as_view(),name="blog_retrieve_destroy"),
+    path('blog_list_create/',views.BlogListCreateCon.as_view(),name="blog_list_create"),
+    path('blog_retrieve_update/<int:pk>',views.BlogRetrieveUpdateCon.as_view(),name="blog_retrieve_update")
 ]
 
