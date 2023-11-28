@@ -1,7 +1,13 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from rest_framework import routers
+
+router=routers.DefaultRouter()
+router.register(r'blogs', views.BlogViewSet, basename='blogs')
+
 
 urlpatterns = [
+    path('', include(router.urls))
     # path('blog_list/',views.blog_list,name="blog_list"),
     # path('blog_detail/<int:pk>/',views.blog_detail,name="blog_detail"),
     
@@ -15,11 +21,11 @@ urlpatterns = [
     # path('blog_list_generic_view/',views.BlogListGenericView.as_view(),name="blog_list_generic_view"),
     #  path('blog_detail_generic_view/<str:slug>/',views.BlogDetailGenericView.as_view(),name="blog_detail_generic_view"),
     
-    path('blog_list_creatapiview/',views.BlogListCon.as_view(),name="blog_list_createapiview"),
-    path('blog_list/',views.BlogList.as_view(),name="blog_list"),
-    path('blog_list_retrieve/<int:pk>/',views.BlogListRetrieve.as_view(),name="blog_list_retrieve"),
-    path('blog_retrieve_destroy/<int:pk>/',views.BlogRetrieveDestroyCon.as_view(),name="blog_retrieve_destroy"),
-    path('blog_list_create/',views.BlogListCreateCon.as_view(),name="blog_list_create"),
-    path('blog_retrieve_update/<int:pk>',views.BlogRetrieveUpdateCon.as_view(),name="blog_retrieve_update")
+    # path('blog_list_creatapiview/',views.BlogListCon.as_view(),name="blog_list_createapiview"),
+    # path('blog_list/',views.BlogList.as_view(),name="blog_list"),
+    # path('blog_list_retrieve/<int:pk>/',views.BlogListRetrieve.as_view(),name="blog_list_retrieve"),
+    # path('blog_retrieve_destroy/<int:pk>/',views.BlogRetrieveDestroyCon.as_view(),name="blog_retrieve_destroy"),
+    # path('blog_list_create/',views.BlogListCreateCon.as_view(),name="blog_list_create"),
+    # path('blog_retrieve_update/<int:pk>',views.BlogRetrieveUpdateCon.as_view(),name="blog_retrieve_update")
 ]
 
