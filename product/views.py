@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated,IsAdminUser,IsAuthenticatedOrReadOnly
-from .permissions import IsAdminUserOrReadOnly
+from .permissions import IsAdminUserOrReadOnly,IsOwnerOrReadonly
 
 
 # Create your views here.
@@ -66,6 +66,7 @@ class BlogListCreateView(generics.ListCreateAPIView):
 class BlogDetailView(generics.RetrieveUpdateDestroyAPIView):
        queryset=Blog.objects.filter(is_public=True)
        serializer_class=BlogSerializer
+       permission_classes=[IsOwnerOrReadonly]
     #    lookup_field='id'
        
        def retrieve(self, request, *args, **kwargs):
