@@ -1,0 +1,13 @@
+permissions--
+
+two type--
+1- global level- once a global permission is defined in the settings.py file, it will apply restrictions.
+2-object level - object level permission is also k/as model level. Model-level permission are defined within the model's  class definition.
+
+to know more use of permission go to drf documentation.
+
+1-allowany.
+2-isAuthenticated.
+3-isAdminUser.
+4-isAuthenticatedorReadOnly.
+5-custom permission
