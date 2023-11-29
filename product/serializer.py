@@ -4,6 +4,7 @@ from product.models import Blog,Category
 
         
 class BlogSerializer(serializers.ModelSerializer):
+    author=serializers.StringRelatedField(read_only=True)
     
     class Meta:
         model = Blog
