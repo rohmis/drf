@@ -8,6 +8,10 @@ urlpatterns = [
     
     path('category_list/',views.CategoryListCreateView.as_view(),name="category_list"),
     path('category_detail/<int:pk>/',views.CategoryDetailView.as_view(),name="category_detail"),
+    
+    path('blog_comment_list/<int:blog_id>/',views.BlogCommentListCreateView.as_view(),name="blog_comment_list"),
+    
+    
 
 ]
 

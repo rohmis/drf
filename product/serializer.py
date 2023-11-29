@@ -1,14 +1,31 @@
 from rest_framework import serializers
-from product.models import Blog,Category
+from product.models import Blog,Category,BlogComment
+from django.urls import reverse
 
+
+class BlogCommentSerializers(serializers.ModelSerializer):
+    blog=serializers.StringRelatedField(read_only=True)
+    author=serializers.ReadOnlyField(source='author.username')
+    class Meta:
+        model=BlogComment
+        fields="__all__"
 
         
 class BlogSerializer(serializers.ModelSerializer):
+    comments=serializers.SerializerMethodField()
     author=serializers.StringRelatedField(read_only=True)
     
     class Meta:
         model = Blog
         fields = "__all__"
+        
+    def get_comments(self,obj):
+        comments=BlogComment.objects.filter(blog=obj)[:3]
+        request=self.context.get('request')
+        return {
+            'comments': BlogCommentSerializers(comments,many=True).data,
+            "all_comment_link":request.build_absolute_uri(reverse('blog_comment_list', kwargs={'blog_id':obj.id}))
+        }
 
 class CategorySerializer(serializers.ModelSerializer):
     id=serializers.IntegerField(read_only=True)
