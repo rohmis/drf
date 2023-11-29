@@ -5,19 +5,14 @@ from rest_framework import status
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated,IsAdminUser,IsAuthenticatedOrReadOnly
-from .permissions import IsAdminUserOrReadOnly,IsOwnerOrReadonly
+from .permissions import IsAdminOrReadOnly,IsOwnerOrReadonly
 
 
 # Create your views here.
 class CategoryListCreateView(generics.ListCreateAPIView):
     queryset=Category.objects.all()
     serializer_class=CategorySerializer
-    # permission_classes=[IsAuthenticated]
-    # permission_classes=[IsAdminUser]
-    # permission_classes=[IsAuthenticatedOrReadOnly]
-    
-    # custom permissions
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    permission_classes=[IsAdminOrReadOnly]
     
     def list(self, request, *args, **kwargs):
         queryset=self.get_queryset()
@@ -30,6 +25,7 @@ class CategoryListCreateView(generics.ListCreateAPIView):
 class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset=Category.objects.all()
     serializer_class=CategorySerializer
+    permission_classes=[IsAdminOrReadOnly]
     
     def retrieve(self, request, *args, **kwargs):
             instance=self.get_object()
@@ -46,6 +42,7 @@ class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
 class BlogListCreateView(generics.ListCreateAPIView):
     queryset=Blog.objects.filter(is_public=True)
     serializer_class=BlogSerializer
+    permission_classes=[IsAuthenticatedOrReadOnly]
     
     def list(self, request, *args, **kwargs):
         queryset= self.get_queryset()
@@ -82,6 +79,7 @@ class BlogDetailView(generics.RetrieveUpdateDestroyAPIView):
 class BlogCommentListCreateView(generics.ListCreateAPIView):
     queryset=BlogComment.objects.all()
     serializer_class=BlogCommentSerializers
+    permission_classes=[IsAuthenticated]
     
     def get_queryset(self):
         blog_id= self.kwargs.get('blog_id')
