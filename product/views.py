@@ -93,3 +93,34 @@ class BlogCommentListCreateView(generics.ListCreateAPIView):
        if BlogComment.objects.filter(blog=blog,author=self.request.user).exists():
            raise serializer.ValidationError({'message':'you have already added comment on this blog'})
        serializer.save(author=self.request.user,blog=blog)
+       
+class BlogCommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset=BlogComment.objects.all()
+    serializer_class=BlogCommentSerializers
+    permission_classes=[IsOwnerOrReadonly]
+    
+    def get_object(self):
+        comment_id = self.kwargs.get('comment_id')
+        comment=get_object_or_404(BlogComment,id=comment_id)
+        
+        blog_id = self.kwargs.get('blog_id')
+        if comment.blog.id != blog_id:
+          raise serializer.ValidationError({'message': "This comment is not related to the requested blog"})
+        return comment
+    
+    def put(self,request,*args,**kwargs):
+        comment= self.get_object()
+        
+        if comment.author != request.user:
+            raise serializer.ValidationError({'message': "Your are not authorized to perform this action"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        return super().put(request, *args,**kwargs)
+    
+    
+    def delete(self,request,*args,**kwargs):
+        comment= self.get_object()
+        
+        if comment.author != request.user:
+            raise serializer.ValidationError({'message': "Your are not authorized to perform this action"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        return super().delete(request, *args,**kwargs)
