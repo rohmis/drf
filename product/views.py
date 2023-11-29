@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated,IsAdminUser,IsAuthenticatedOrReadOnly
+from .permissions import IsAdminUserOrReadOnly
 
 
 # Create your views here.
@@ -13,6 +14,9 @@ class CategoryListCreateView(generics.ListCreateAPIView):
     serializer_class=CategorySerializer
     # permission_classes=[IsAuthenticated]
     # permission_classes=[IsAdminUser]
+    # permission_classes=[IsAuthenticatedOrReadOnly]
+    
+    # custom permissions
     permission_classes=[IsAuthenticatedOrReadOnly]
     
     def list(self, request, *args, **kwargs):
