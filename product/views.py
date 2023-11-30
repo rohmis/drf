@@ -6,6 +6,7 @@ from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated,IsAdminUser,IsAuthenticatedOrReadOnly
 from .permissions import IsAdminOrReadOnly,IsOwnerOrReadonly
+from rest_framework.throttling import UserRateThrottle,AnonRateThrottle
 
 
 # Create your views here.
@@ -43,6 +44,7 @@ class BlogListCreateView(generics.ListCreateAPIView):
     queryset=Blog.objects.filter(is_public=True)
     serializer_class=BlogSerializer
     permission_classes=[IsAuthenticatedOrReadOnly]
+    throttle_classes=[UserRateThrottle,AnonRateThrottle]
     
     def list(self, request, *args, **kwargs):
         queryset= self.get_queryset()
